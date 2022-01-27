@@ -28,17 +28,27 @@ if len(sys.argv) == 2:
     data = load_data(SAVED_DATA)
     
     if command == 'save': 
-        key = input('Please enter a key: ')
+        key = input('Please enter a key to save: ')
         data[key] = clipboard.paste()
         save_data(SAVED_DATA, data)
+        print('Data saved.\n')
 
     elif command == 'load': 
-        print('load')
+        key = input("Please enter key to load: ")
 
-    elif command == 'list': 
-        pass
+        if key in data:
+            clipboard.copy(data[key])
+            print('Data copied.\n')
+        else:
+            print('That key doesn\'t exist\n')
 
-    else: print('Unknown command')
+    elif command == 'list':
+        for key, value in data.items():
+            print(f'{key}: {value}')
+
+    else: print('Unknown command\n')
 
 else:
     print('Please pass exactly one command...(save/load/list)')
+
+
