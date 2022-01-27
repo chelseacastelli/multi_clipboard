@@ -3,20 +3,41 @@ import sys
 import clipboard
 import json
 
-def save_items(filepath, data):
+SAVED_DATA = 'clipboard.json'
+
+# Write JSON file
+def save_data(filepath, data):
     # Override file is it already exists, otherwise create it
     with open(filepath, "w") as f:
         # Dump json data to f (file)
         json.dump(data, f)
 
-save_items("test.json", {"key": "value"})
+
+# Read JSON file
+def load_data(filepath):
+    try:
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+            return data
+    except:
+        return {}
+
 
 if len(sys.argv) == 2:
     command = sys.argv[1]
+    data = load_data(SAVED_DATA)
     
-    if command == 'save': print('save')
-    elif command == 'load': print('load')
-    elif command == 'list': print('list')
+    if command == 'save': 
+        key = input('Please enter a key: ')
+        data[key] = clipboard.paste()
+        save_data(SAVED_DATA, data)
+
+    elif command == 'load': 
+        print('load')
+
+    elif command == 'list': 
+        pass
+
     else: print('Unknown command')
 
 else:
